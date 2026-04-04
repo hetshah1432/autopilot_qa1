@@ -27,6 +27,7 @@ WORKDIR /app
 # Copy the monorepo root package.json and workspace definitions
 COPY package.json package-lock.json ./
 COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
 COPY packages/types/package.json ./packages/types/
 COPY packages/utils/package.json ./packages/utils/
 
