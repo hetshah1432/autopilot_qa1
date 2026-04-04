@@ -1,0 +1,62 @@
+﻿  Γû▓ Next.js 14.2.35
+
+   Creating an optimized production build ...
+node.exe : Failed to compile.
+At C:\Program Files\nodejs\npx.ps1:29 
+char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpec 
+   ified: (Failed to compile.:String  
+  ) [], RemoteException
+    + FullyQualifiedErrorId : NativeC 
+   ommandError
+ 
+
+../../node_modules/lucide-react/dist/e
+sm/lucide-react.js
+Module not found: Can't resolve 
+'./icons/accessibility.js'
+
+https://nextjs.org/docs/messages/modul
+e-not-found
+
+Import trace for requested module:
+./src/app/page.tsx
+
+../../node_modules/lucide-react/dist/e
+sm/lucide-react.js
+Module not found: Can't resolve 
+'./icons/arrow-right.js'
+
+https://nextjs.org/docs/messages/modul
+e-not-found
+
+Import trace for requested module:
+./src/app/page.tsx
+
+../../node_modules/lucide-react/dist/e
+sm/lucide-react.js
+Module not found: Can't resolve 
+'./icons/chart-column.js'
+
+https://nextjs.org/docs/messages/modul
+e-not-found
+
+Import trace for requested module:
+./src/app/page.tsx
+
+../../node_modules/lucide-react/dist/e
+sm/lucide-react.js
+Module not found: Can't resolve 
+'./icons/chart-line.js'
+
+https://nextjs.org/docs/messages/modul
+e-not-found
+
+Import trace for requested module:
+./src/app/page.tsx
+
+
+> Build failed because of webpack 
+errors

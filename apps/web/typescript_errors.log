@@ -1,0 +1,7 @@
+﻿src/app/layout.tsx(7,10): error TS2305: Module '"next/font/google"' has no exported member 'Geist'.
+src/components/ui/run-action-button.tsx(4,30): error TS2307: Cannot find module 'react-icons/hi' or its corresponding type declarations.
+src/components/ui/run-action-button.tsx(5,30): error TS2307: Cannot find module 'react-icons/io5' or its corresponding type declarations.
+src/components/ui/run-action-button.tsx(6,25): error TS2307: Cannot find module 'react-icons/fa6' or its corresponding type declarations.
+src/components/ui/run-action-button.tsx(7,35): error TS2307: Cannot find module 'react-icons/ri' or its corresponding type declarations.
+src/components/ui/run-action-button.tsx(8,55): error TS2307: Cannot find module 'react-icons/bs' or its corresponding type declarations.
+src/components/ui/run-action-button.tsx(9,37): error TS2307: Cannot find module 'react-icons/tb' or its corresponding type declarations.
