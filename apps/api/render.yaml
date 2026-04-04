@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: autopilot-qa-api
+    plan: starter
+    runtime: docker
+    dockerfilePath: apps/api/Dockerfile
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: NODE_ENV
+        value: production

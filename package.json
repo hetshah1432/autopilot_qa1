@@ -1,0 +1,23 @@
+{
+  "name": "autopilot-qa",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "setup": "npx playwright install chromium"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "turbo": "^2.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
