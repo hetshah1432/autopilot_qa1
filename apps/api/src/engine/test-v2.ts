@@ -29,22 +29,22 @@ async function testV2() {
     category: 'seo',
     severity: 'medium',
     confidence: 1.0,
-    detectionType: 'deterministic',
+    detection_type: 'deterministic',
     scope: 'page',
     title: 'Missing Meta',
-    affectedPagesCount: 1,
-    pageRole: 'homepage'
+    affected_pages_count: 1,
+    page_role: 'homepage'
   }];
   
   const manyIssues: Issue[] = [{
     category: 'seo',
     severity: 'medium',
     confidence: 1.0,
-    detectionType: 'deterministic',
+    detection_type: 'deterministic',
     scope: 'page',
     title: 'Missing Meta',
-    affectedPagesCount: 10,
-    pageRole: 'generic_internal'
+    affected_pages_count: 10,
+    page_role: 'generic_internal'
   }];
 
   const scoreSingle = calculateScores(singleIssue, ['p1']);
