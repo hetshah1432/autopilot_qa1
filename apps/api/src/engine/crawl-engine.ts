@@ -73,70 +73,78 @@ export class CrawlEngine {
 
     if (this.config.use_js) {
       try {
-        this.browser = await chromium.launch({ headless: true });
+        this.browser = await chromium.launch({ 
+          headless: true,
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+        });
       } catch (err: any) {
         onProgress(`Browser engine unavailable: Falling back to static scanning mode.`);
         this.config.use_js = false;
       }
     }
 
-    const domain = new URL(this.startUrl).hostname;
+    try {
+      const domain = new URL(this.startUrl).hostname;
 
-    while (this.queue.length > 0 && this.results.length < this.config.max_pages) {
-      const current = this.queue.shift()!;
-      if (this.visited.has(current.url)) continue;
-      this.visited.add(current.url);
+      while (this.queue.length > 0 && this.results.length < this.config.max_pages) {
+        const current = this.queue.shift()!;
+        if (this.visited.has(current.url)) continue;
+        this.visited.add(current.url);
 
-      const path = new URL(current.url).pathname;
-      if (isPathDisallowed(path, this.disallowedPaths)) {
-        onProgress(`Skipping robots-disallowed path: ${current.url}`);
-        this.results.push({
-          url: current.url,
-          html: '',
-          status: 403,
-          headers: {},
-          response_time_ms: 0,
-          crawl_status: 'robots_disallowed',
-          blocked: true,
-          block_reason: 'Disallowed by robots.txt'
-        });
-        continue;
-      }
-
-      onProgress(`Crawling page ${this.results.length + 1} of max ${this.config.max_pages} — ${current.url}`);
-
-      if (this.results.length > 0) {
-        await sleep(500 + Math.random() * 1000);
-      }
-
-      try {
-        const pageData = await this.fetchPage(current.url);
-        this.results.push(pageData);
-
-        if (!pageData.blocked && current.depth < this.config.depth) {
-          const links = this.extractLinks(pageData.html, current.url);
-          this.discoveredCount += links.length;
-          
-          links.forEach(link => {
-            const isExternal = new URL(link, current.url).hostname !== domain;
-
-            this.allLinks.push({
-              source: current.url,
-              target: link,
-              is_external: isExternal
-            });
-
-            if (!isExternal && !this.visited.has(link) && this.results.length < this.config.max_pages) {
-              this.queue.push({ url: link, depth: current.depth + 1 });
-            }
+        const path = new URL(current.url).pathname;
+        if (isPathDisallowed(path, this.disallowedPaths)) {
+          onProgress(`Skipping robots-disallowed path: ${current.url}`);
+          this.results.push({
+            url: current.url,
+            html: '',
+            status: 403,
+            headers: {},
+            response_time_ms: 0,
+            crawl_status: 'robots_disallowed',
+            blocked: true,
+            block_reason: 'Disallowed by robots.txt'
           });
+          continue;
         }
-      } catch (err: any) {
-        console.error(`Error crawling ${current.url}:`, err.message);
+
+        onProgress(`Crawling ${this.results.length + 1}/${this.config.max_pages} — ${current.url}`);
+
+        if (this.results.length > 0) {
+          await sleep(500 + Math.random() * 1000);
+        }
+
+        try {
+          const pageData = await this.fetchPage(current.url);
+          this.results.push(pageData);
+
+          if (!pageData.blocked && current.depth < this.config.depth) {
+            const links = this.extractLinks(pageData.html, current.url);
+            this.discoveredCount += links.length;
+            
+            links.forEach(link => {
+              const isExternal = new URL(link, current.url).hostname !== domain;
+
+              this.allLinks.push({
+                source: current.url,
+                target: link,
+                is_external: isExternal
+              });
+
+              if (!isExternal && !this.visited.has(link) && this.results.length < this.config.max_pages) {
+                this.queue.push({ url: link, depth: current.depth + 1 });
+              }
+            });
+          }
+        } catch (err: any) {
+          console.error(`Error crawling ${current.url}:`, err.message);
+        }
+      }
+    } finally {
+      if (this.browser) {
+        await this.browser.close();
+        this.browser = null;
       }
     }
-
-    if (this.browser) await this.browser.close();
 
     const summary: CrawlSummary = {
       totalPagesDiscovered: this.discoveredCount || this.results.length,
