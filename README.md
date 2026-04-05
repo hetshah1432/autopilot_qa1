@@ -34,13 +34,13 @@ We don't just report errors; we solve them. Using **Google Gemini AI**, the syst
 
 ```mermaid
 graph TD
-    User((User)) -->|Next.js Dashboard| FE[Frontend - App Router]
-    FE -->|SSE / REST| BE[Express API Orchestrator]
-    BE -->|Deep Crawl| PW[Playwright Engine]
-    PW -->|DOM Data| AM[Analysis Modules]
-    AM -->|Context| AI[Google Gemini AI]
-    AI -->|Remediation| DB[(Supabase Persistence)]
-    DB -->|Realtime Update| FE
+    User([User]) -->|"Next.js Dashboard"| FE["Frontend (App Router)"]
+    FE -->|"SSE / REST"| BE["Express API Orchestrator"]
+    BE -->|"Deep Crawl"| PW["Playwright Engine"]
+    PW -->|"DOM Data"| AM["Analysis Modules"]
+    AM -->|"Context"| AI["Google Gemini AI"]
+    AI -->|"Remediation"| DB[("Supabase (PostgreSQL)")]
+    DB -->|"Realtime Update"| FE
 ```
 
 ---
