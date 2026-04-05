@@ -1,93 +1,100 @@
-# Autopilot QA 🚀
+# Autopilot QA 🚀 — Production-Grade AI Website Auditing
 
-[![Final Sprint](https://img.shields.io/badge/Status-Phase%205%20Complete-green?style=for-the-badge)](https://autopilotqa.app)
-[![Tech Stack](https://img.shields.io/badge/Stack-Next.js%2014%20%7C%20Express%20%7C%20Supabase-blue?style=for-the-badge)](https://github.com)
+[![Status](https://img.shields.io/badge/Status-Production--Ready-green?style=for-the-badge)](https://autopilot-qa-web.vercel.app)
+[![Powered By](https://img.shields.io/badge/Powered%20By-Google%20Gemini%20%7C%20Playwright-blue?style=for-the-badge)](https://ai.google.dev)
 
-**Autopilot QA** is an AI-first, production-grade website auditing SaaS platform. It leverages Playwright for deep crawling, custom scoring engines for multi-category health assessment, and Google Gemini AI for developer-ready fix suggestions and executive summaries.
+**Autopilot QA** is an advanced, AI-first SaaS platform designed to automate the complex process of website auditing. It goes beyond simple linting by leveraging **Chromium-based deep crawling** and **LLM intelligence** to provide high-fidelity health reports, actionable remediation code, and executive-level summaries.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Core Pillars
 
-- **AI-Powered Analysis**: Beyond simple linting, Gemini analyzes *meaning* and *context* to provide "Why it Matters" and "How to Fix" guides.
-- **Deep Exploration**: Headless Playwright engine with full JavaScript execution for modern SPAs.
-- **Comparison Engine**: Track your progress with side-by-side audit comparisons and score deltas.
-- **Onboarding Wizard**: Guided experience for new users to launch their first scan in under 60 seconds.
-- **Public Sharing**: Share secure, unauthenticated reports with clients or stakeholders.
-- **Developer Chat Assistant**: Ask context-aware questions about your specific findings directly in the report view.
-- **One-Click Fixes**: Generated before/after code blocks for immediate issue resolution.
+### 1. **Deep Engine Discovery**
+Powered by **Playwright**, our engine executes the full JavaScript stack of modern SPAs (React, Next.js, Vue) to find "hidden" issues that static scanners miss. It respects `robots.txt` but offers an **Owner-Assisted Fallback** if access is blocked by WAFs (Cloudflare).
+
+### 2. **Multi-Vector Analysis**
+Every scan evaluates your project across six critical technical vectors:
+- **SEO**: Core web vitals, metadata, and crawlability.
+- **Accessibility (A11y)**: WCAG conformance and semantic HTML.
+- **Performance**: Resource optimization and delivery impacts.
+- **Security**: HTTPS health, header safety, and script vulnerabilities.
+- **UX**: Visual flow and interactive consistency.
+- **Broken Links**: Automated link sanity checks.
+
+### 3. **AI-Driven Remediation**
+We don't just report errors; we solve them. Using **Google Gemini AI**, the system generates:
+- **Executive Summaries**: High-level overviews for stakeholders.
+- **Detailed Explanations**: "Why it Matters" sections for every finding.
+- **One-Click Fixes**: Copy-pasteable code blocks to resolve issues immediately.
+- **Scan Chat Assistant**: A dedicated sidebar where you can ask, *"What is the most critical security fix for this page?"*
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    User((User)) -->|Next.js Dashboard| FE[Frontend - App Router]
+    FE -->|SSE / REST| BE[Express API Orchestrator]
+    BE -->|Deep Crawl| PW[Playwright Engine]
+    PW -->|DOM Data| AM[Analysis Modules]
+    AM -->|Context| AI[Google Gemini AI]
+    AI -->|Remediation| DB[(Supabase Persistence)]
+    DB -->|Realtime Update| FE
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Monorepo**: Turborepo
-- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion, TanStack Query
-- **Backend**: Express + TypeScript, Playwright, Cheerio, Google Gemini API
-- **Infrastructure**: Supabase (PostgreSQL, Auth, RLS), Docker
-- **UI System**: Custom "Watermelon-inspired" sleek dark-mode design system
+- **Monorepo**: [Turborepo](https://turbo.build/repo)
+- **Frontend**: [Next.js 14](https://nextjs.org/), TypeScript, Tailwind CSS
+- **State & Sync**: [Framer Motion](https://www.framer.com/motion/), [TanStack Query](https://tanstack.com/query)
+- **Backend**: [Express](https://expressjs.com/) + TypeScript
+- **Automation**: [Playwright](https://playwright.dev/) + [Cheerio](https://cheerio.js.org/)
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL + RLS)
+- **Infrastructure**: Docker, Render (API), Vercel (Web)
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### 1. Prerequisites
-- [Node.js 20+](https://nodejs.org/)
-- [Supabase Account](https://supabase.com/)
-- [Google AI Studio Key](https://aistudio.google.com/) (Gemini)
+### 1. Clone & Install
+```bash
+git clone https://github.com/your-username/autopilot-qa.git
+cd autopilot-qa
+npm install
+```
 
 ### 2. Environment Setup
-Fill the `.env` variables in both `apps/web` and `apps/api` (refer to `.env.example`).
+Create `.env` files in `apps/web` and `apps/api` using the provided `.env.example` templates.
+Necessary Keys:
+- `SUPABASE_URL` & `SUPABASE_ANON_KEY`
+- `GROQ_API_KEY` (for AI Engine)
+- `NEXT_PUBLIC_API_URL` (for Frontend)
 
-### 3. Install & Run
+### 3. Launch Development
 ```bash
-npm install
 npx turbo run dev
 ```
 
-### 4. Seed Demo Data (Optional)
-Prepare your dashboard with realistic data immediately:
-```bash
-cd apps/api
-npm run seed:demo
-```
+---
+
+## 📦 Deployment Note
+
+### **Frontend (Vercel)**
+- **Root**: `apps/web`
+- **Build**: `cd ../.. && turbo run build --filter=web`
+
+### **Backend (Render)**
+- **Root**: `apps/api`
+- **Environment**: Ensure the Dockerfile is used. 
+- **Optimization**: Our specialized launch flags (`--disable-dev-shm-usage`) ensure stability on 512MB RAM free instances.
 
 ---
 
-## 🧪 Demo Walkthrough (5 Min)
-1. **Login**: Use `demo@autopilotqa.com` / `Demo1234!` (after seeding).
-2. **Dashboard**: Observe the "Health Score Trend" and "Recent Projects".
-3. **New Project**: Create a project for `https://example.com`.
-4. **Scan**: Run a "Quick Scan" and watch the live SSE progress terminal with confetti on completion.
-5. **Report**: Explore the Radar Chart and AI Summary. Click "Generate Fix" on a critical issue.
-6. **Chat**: Ask the assistant: *"What should I fix first for SEO?"*.
-7. **History**: Select two historical scans and click "Compare Scans" to see the score delta.
+## 🎨 Design Philosophy: Neo-Illustrative Minimalism
+The UI utilizes a "frosted-glass" aesthetic with `3xl` rounded corners, soft azure shadows, and a bright, light-themed palette designed to reduce "diagnostic fatigue" while presenting complex technical data.
 
 ---
-
-## 🏗️ Architecture
-```
-[User] → [Next.js Dashboard]
-            ↓ (REST + Auth)
- [Express Orchestrator] → [Crawl Engine (Playwright)]
-            ↓                     ↓ (DOM Tree)
- [Google Gemini AI] ← [Analysis Modules (SEO, Security, etc)]
-            ↓                     ↓ (Scored Data)
-      [Supabase DB] ← (Final Result)
-            ↓
-    [SSE Real-time Events] → [Frontend Progress Page]
-```
-
----
-
-## 📦 Deployment
-
-### Frontend (Vercel)
-- Root: `apps/web`
-- Build Command: `cd ../.. && turbo run build --filter=web`
-- Output: `apps/web/.next`
-
-### Backend (Render/Railway)
-- Root: `apps/api`
-- Command: `npx playwright install chromium --with-deps && npm run build && npm start`
-- Ensure `SUPABASE_SERVICE_ROLE_KEY` is kept secret.
+*Created with ❤️ by the Autopilot QA Team.*
