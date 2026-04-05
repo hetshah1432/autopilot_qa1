@@ -99,7 +99,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     <div className="space-y-10">
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="mb-2 text-4xl font-bold tracking-tight">Dashboard Home</h1>
+          <h1 className="mb-2 text-4xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-lg text-muted">Here is what is happening across your projects.</p>
         </div>
         <Link

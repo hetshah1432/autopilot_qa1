@@ -76,7 +76,7 @@ export default function ScanChatAssistant({ scanId, siteUrl }: { scanId: string;
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-[88px] right-6 z-50 flex h-[520px] max-h-[60vh] w-[380px] max-w-[calc(100vw-24px)] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-card/95 shadow-elevated backdrop-blur-xl"
+            className="fixed bottom-[88px] right-6 sm:right-6 left-3 sm:left-auto z-50 flex h-[520px] max-h-[60vh] w-[calc(100vw-24px)] sm:w-[380px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-card/95 shadow-elevated backdrop-blur-xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/[0.08] bg-gradient-to-r from-primary/15 to-accent/10 px-5 py-4">

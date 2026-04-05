@@ -71,14 +71,16 @@ export default async function ProjectDetailPage({ params, searchParams }: { para
   ] : []
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10">
       {/* Project Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 bg-surface p-8 md:p-10 rounded-[40px] border border-white/5 shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 bg-surface p-6 sm:p-10 rounded-[32px] sm:rounded-[40px] border border-white/5 shadow-2xl relative overflow-hidden">
          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary opacity-20" />
          
-         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10">
-            <ScoreGauge score={healthScore} size={140} strokeWidth={10} />
-            <div className="text-center md:text-left">
+         <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-10">
+            <div className="scale-75 sm:scale-100">
+               <ScoreGauge score={healthScore} size={140} strokeWidth={10} />
+            </div>
+            <div className="text-center md:text-left -mt-4 sm:mt-0">
                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-2">
                   <div className="flex flex-wrap items-center gap-3">
                      <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
@@ -101,15 +103,15 @@ export default async function ProjectDetailPage({ params, searchParams }: { para
                {['queued', 'crawling', 'analyzing', 'ai_processing', 'ai_progress'].includes(scanStatus) && latestScan && (
                   <LiveScanStatus scanId={latestScan.id} initialStatus={scanStatus} />
                )}
-               <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-muted font-medium">
-                  <a href={project.url} target="_blank" className="flex items-center hover:text-primary transition-colors">
-                     <Globe className="w-4 h-4 mr-2 text-primary/50" />
+                <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-6 text-muted font-medium">
+                  <a href={project.url} target="_blank" className="flex items-center hover:text-primary transition-colors text-xs sm:text-base break-all justify-center">
+                     <Globe className="w-4 h-4 mr-2 text-primary/50 shrink-0" />
                      {project.url}
-                     <ExternalLink className="w-3 h-3 ml-2 opacity-50" />
+                     <ExternalLink className="w-3 h-3 ml-2 opacity-50 shrink-0" />
                   </a>
-                  <div className="flex items-center">
+                  <div className="flex items-center text-xs sm:text-base">
                      <Calendar className="w-4 h-4 mr-2 text-primary/50" />
-                     Created {new Date(project.created_at).toLocaleDateString()}
+                     {new Date(project.created_at).toLocaleDateString()}
                   </div>
                </div>
             </div>
@@ -127,9 +129,9 @@ export default async function ProjectDetailPage({ params, searchParams }: { para
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 p-1 bg-surface border border-border rounded-2xl w-fit">
+      <div className="flex items-center gap-1 sm:gap-2 p-1 bg-surface border border-border rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar">
          <TabLink href={`/projects/${project.id}?tab=overview`} active={currentTab === 'overview'} label="Overview" icon={<Activity className="w-4 h-4" />} />
-         <TabLink href={`/projects/${project.id}?tab=scans`} active={currentTab === 'scans'} label="Scan History" icon={<Clock className="w-4 h-4" />} />
+         <TabLink href={`/projects/${project.id}?tab=scans`} active={currentTab === 'scans'} label="History" icon={<Clock className="w-4 h-4" />} />
          <TabLink href={`/projects/${project.id}?tab=settings`} active={currentTab === 'settings'} label="Settings" icon={<SettingsIcon className="w-4 h-4" />} />
       </div>
 
@@ -168,46 +170,83 @@ export default async function ProjectDetailPage({ params, searchParams }: { para
 
         {currentTab === 'scans' && (
            <div className="bg-surface rounded-3xl border border-border overflow-hidden">
-              <table className="w-full text-left">
-                 <thead>
-                    <tr className="text-xs uppercase tracking-widest font-bold text-muted bg-white/5">
-                        <th className="p-6">Status</th>
-                        <th className="p-6">Overall Score</th>
-                        <th className="p-6">Issues Found</th>
-                        <th className="p-6">Triggered At</th>
-                        <th className="p-6 text-right">Actions</th>
-                    </tr>
-                 </thead>
-                 <tbody className="divide-y divide-border">
-                    {project.scans?.map((s: any) => (
-                       <tr key={s.id} className="group hover:bg-white/5 transition-colors">
-                          <td className="p-6 uppercase font-bold text-[10px]">
-                             <span className={cn("px-2 py-1 rounded", s.status === 'complete' ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary')}>
-                                {s.status}
-                             </span>
-                          </td>
-                          <td className="p-6">
-                             <div className="flex items-center gap-3 font-bold">
-                                <div className="w-10 h-1 bg-white/10 rounded-full overflow-hidden">
-                                   <div className="h-full bg-primary" style={{ width: `${s.overall_score || 0}%` }} />
-                                </div>
-                                {s.overall_score || '-'}/100
-                             </div>
-                          </td>
-                          <td className="p-6 font-medium text-error flex items-center gap-2">
-                             <AlertCircle className="w-4 h-4" />
-                             {s.issue_count} findings
-                          </td>
-                          <td className="p-6 text-xs text-muted">
-                             {new Date(s.created_at).toLocaleString()}
-                          </td>
-                          <td className="p-6 text-right">
-                             <Link href={`/scans/${s.id}/report`} className="text-primary hover:underline font-bold text-sm">View Details</Link>
-                          </td>
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto">
+                 <table className="w-full text-left">
+                    <thead>
+                       <tr className="text-xs uppercase tracking-widest font-bold text-muted bg-white/5">
+                           <th className="p-6">Status</th>
+                           <th className="p-6">Overall Score</th>
+                           <th className="p-6">Issues Found</th>
+                           <th className="p-6">Triggered At</th>
+                           <th className="p-6 text-right">Actions</th>
                        </tr>
-                    ))}
-                 </tbody>
-              </table>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                       {project.scans?.map((s: any) => (
+                          <tr key={s.id} className="group hover:bg-white/5 transition-colors">
+                             <td className="p-6 uppercase font-bold text-[10px]">
+                                <span className={cn("px-2 py-1 rounded", s.status === 'complete' ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary')}>
+                                   {s.status}
+                                </span>
+                             </td>
+                             <td className="p-6">
+                                <div className="flex items-center gap-3 font-bold">
+                                   <div className="w-10 h-1 bg-white/10 rounded-full overflow-hidden">
+                                      <div className="h-full bg-primary" style={{ width: `${s.overall_score || 0}%` }} />
+                                   </div>
+                                   {s.overall_score || '-'}/100
+                                </div>
+                             </td>
+                             <td className="p-6 font-medium text-error flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" />
+                                {s.issue_count} findings
+                             </td>
+                             <td className="p-6 text-xs text-muted">
+                                {new Date(s.created_at).toLocaleString()}
+                             </td>
+                             <td className="p-6 text-right">
+                                <Link href={`/scans/${s.id}/report`} className="text-primary hover:underline font-bold text-sm">View Details</Link>
+                             </td>
+                          </tr>
+                       ))}
+                    </tbody>
+                 </table>
+              </div>
+
+              {/* Mobile List View */}
+              <div className="md:hidden divide-y divide-border">
+                 {project.scans?.map((s: any) => (
+                    <div key={s.id} className="p-5 space-y-4 hover:bg-white/5 transition-colors">
+                       <div className="flex items-center justify-between">
+                          <span className={cn("px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest", s.status === 'complete' ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary')}>
+                             {s.status}
+                          </span>
+                          <span className="text-[10px] text-muted font-medium">{new Date(s.created_at).toLocaleDateString()}</span>
+                       </div>
+                       <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 font-black text-sm">
+                             <div className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center text-[10px] text-primary">
+                                {s.overall_score || '--'}
+                             </div>
+                             Score
+                          </div>
+                          <div className="text-error font-bold text-xs flex items-center gap-1.5">
+                             <AlertCircle className="w-3 h-3" />
+                             {s.issue_count} Issues
+                          </div>
+                       </div>
+                       <Link href={`/scans/${s.id}/report`} className="block w-full py-3 bg-white/5 border border-white/10 rounded-xl text-center text-xs font-black uppercase tracking-widest text-primary hover:bg-white/10 transition-all">
+                          View Analysis Report
+                       </Link>
+                    </div>
+                 ))}
+                 {(!project.scans || project.scans.length === 0) && (
+                   <div className="p-10 text-center text-muted font-medium italic text-sm">
+                      No scan history available for this project.
+                   </div>
+                 )}
+              </div>
            </div>
         )}
 
@@ -233,12 +272,12 @@ function TabLink({ href, active, label, icon }: any) {
     <Link 
       href={href}
       className={cn(
-        "flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all relative overflow-hidden group",
+        "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all relative overflow-hidden group",
         active ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted hover:text-foreground"
       )}
     >
       {icon}
-      {label}
+      <span className="whitespace-nowrap">{label}</span>
     </Link>
   )
 }

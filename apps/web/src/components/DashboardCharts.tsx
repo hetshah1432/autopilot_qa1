@@ -36,6 +36,8 @@ export function DashboardCharts({ data }: DashboardChartsProps) {
             tickLine={false}
             tick={{ fill: "#8b8ba3", fontSize: 10 }}
             dy={16}
+            interval="preserveStartEnd"
+            minTickGap={30}
             tickFormatter={(val) => val.split(" - ")[0] || val}
           />
           <YAxis
@@ -43,6 +45,7 @@ export function DashboardCharts({ data }: DashboardChartsProps) {
             tickLine={false}
             tick={{ fill: "#8b8ba3", fontSize: 10 }}
             domain={[0, 100]}
+            width={30}
           />
           <Tooltip
             labelFormatter={(label) => label}

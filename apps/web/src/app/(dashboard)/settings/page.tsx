@@ -25,7 +25,7 @@ import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api'
 import { ConfirmDialog } from '@/components/ui/Feedback'
 
-type Tab = 'profile' | 'integrations' | 'danger'
+type Tab = 'profile' | 'danger'
 
 export default function SettingsPage() {
   const { user, session, signOut, supabase } = useAuth()
@@ -111,7 +111,6 @@ export default function SettingsPage() {
 
   const TABS: { id: Tab; label: string; icon: any }[] = [
     { id: 'profile', label: 'Profile', icon: User },
-    { id: 'integrations', label: 'Integrations', icon: ShieldCheck },
     { id: 'danger', label: 'Danger Zone', icon: ShieldAlert },
   ]
 
@@ -164,11 +163,9 @@ export default function SettingsPage() {
                          </div>
                          <div>
                             <p className="text-xl font-bold">{user?.user_metadata?.full_name || 'Autopilot User'}</p>
-                            <p className="text-[#64748b] text-sm flex items-center gap-1.5">
-                               {user?.email} 
-                               <span className="w-1 h-1 rounded-full bg-green-500" />
-                               <span className="text-green-500 font-bold uppercase text-[10px] tracking-widest">Verified</span>
-                            </p>
+                             <p className="text-[#64748b] text-sm truncate">
+                                {user?.email} 
+                             </p>
                          </div>
                       </div>
 
@@ -204,76 +201,6 @@ export default function SettingsPage() {
                 </motion.div>
              )}
 
-             {activeTab === 'integrations' && (
-                <motion.div 
-                   key="integrations"
-                   initial={{ opacity: 0, y: 10 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   className="space-y-6"
-                >
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Groq AI */}
-                      <div className="bg-[#0d0d14] border border-white/5 rounded-3xl p-6 space-y-4">
-                         <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400">
-                               <Key className="w-5 h-5" />
-                            </div>
-                            {status?.services?.ai?.status === 'ok' ? (
-                               <span className="px-2 py-0.5 bg-green-500/10 text-green-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-green-500/20">Active</span>
-                            ) : (
-                               <span className="px-2 py-0.5 bg-red-500/10 text-red-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-red-500/20">Error</span>
-                            )}
-                         </div>
-                         <div>
-                            <h3 className="font-bold text-lg">AI Engine (Groq)</h3>
-                            <p className="text-[#64748b] text-xs">Proprietary logic using {status?.services?.ai?.model || 'llama-3.3-70b-versatile'}.</p>
-                         </div>
-                         <div className="text-[10px] font-mono text-[#64748b] bg-black/40 rounded-lg p-2 truncate">
-                            API_KEY: ••••••••••••••••
-                         </div>
-                      </div>
-
-                      {/* Supabase */}
-                      <div className="bg-[#0d0d14] border border-white/5 rounded-3xl p-6 space-y-4">
-                         <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400">
-                               <Server className="w-5 h-5" />
-                            </div>
-                            <span className="px-2 py-0.5 bg-green-500/10 text-green-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-green-500/20">Connected</span>
-                         </div>
-                         <div>
-                            <h3 className="font-bold text-lg">Supabase Cloud</h3>
-                            <p className="text-[#64748b] text-xs">PostgreSQL Database + Auth Service.</p>
-                         </div>
-                         <div className="text-[10px] font-mono text-[#64748b] bg-black/40 rounded-lg p-2 truncate">
-                            REGION: eu-central-1 (AWS)
-                         </div>
-                      </div>
-
-                      {/* Playwright */}
-                      <div className="bg-[#0d0d14] border border-white/5 rounded-3xl p-6 space-y-4 md:col-span-2">
-                         <div className="flex items-center gap-6">
-                            <div className="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-400 shrink-0">
-                               <Terminal className="w-7 h-7" />
-                            </div>
-                            <div className="flex-1">
-                               <div className="flex items-center justify-between">
-                                  <h3 className="font-bold text-lg">Crawl Engine (Playwright)</h3>
-                                  <div className="flex items-center gap-2 text-green-400 text-xs font-bold">
-                                     <CheckCircle2 className="w-4 h-4" />
-                                     Chromium Ready
-                                  </div>
-                               </div>
-                               <p className="text-[#64748b] text-xs mt-1">
-                                  Powering full JavaScript rendering and interaction simulation. 
-                                  Currently using a browser pool for maximum throughput.
-                               </p>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </motion.div>
-             )}
 
              {activeTab === 'danger' && (
                 <motion.div 

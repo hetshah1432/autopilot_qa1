@@ -99,6 +99,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 href={item.href}
                 whileHover={{ x: 2 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors",
                   isActive

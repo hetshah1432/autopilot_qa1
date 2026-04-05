@@ -76,13 +76,13 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-sm font-medium text-muted transition-colors hover:text-foreground"
+              className="rounded-xl px-4 py-2 text-sm font-semibold transition-all md:bg-transparent md:text-muted md:hover:text-foreground bg-primary text-primary-foreground shadow-glow-sm"
             >
               Log in
             </Link>
             <Link
               href="/signup"
-              className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow-sm transition-[transform,box-shadow] hover:shadow-glow active:scale-[0.98]"
+              className="hidden md:block rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow-sm transition-[transform,box-shadow] hover:shadow-glow active:scale-[0.98]"
             >
               Start Free Audit
             </Link>
